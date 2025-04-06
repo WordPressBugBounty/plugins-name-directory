@@ -683,8 +683,25 @@ function name_directory_names()
     }
 
     $directory = $wpdb->get_row("SELECT * FROM " . $name_directory_table_directory . " WHERE `id` = " . $directory_id, ARRAY_A);
-    $names = $wpdb->get_results(sprintf("SELECT * FROM %s WHERE `directory` = %d AND `published` IN (%s) ORDER BY `name` ASC",
-        $name_directory_table_directory_name, $directory_id, $published_status));
+
+    if( ! empty( $name_directory_settings['use_namedirectory_admin_pagination'] ) ) {
+
+        $pagenum = isset( $_GET['pagenum'] ) ? absint( $_GET['pagenum'] ) : 1;
+
+        $page_size = 50; // number of rows in page
+        $offset = ( $pagenum - 1 ) * $page_size;
+        $total_names = $wpdb->get_var( sprintf("SELECT COUNT(`id`) FROM %s WHERE `directory` = %d AND `published` IN (%s)",
+            $name_directory_table_directory_name, $directory_id, $published_status));
+        $num_of_pages = ceil( $total_names / $page_size );
+
+        $names = $wpdb->get_results(sprintf("SELECT * FROM %s WHERE `directory` = %d AND `published` IN (%s) ORDER BY `name` ASC LIMIT %d, %d",
+            $name_directory_table_directory_name, $directory_id, $published_status, $offset, $page_size));
+    }
+    else
+    {
+        $names = $wpdb->get_results(sprintf("SELECT * FROM %s WHERE `directory` = %d AND `published` IN (%s) ORDER BY `name` ASC",
+            $name_directory_table_directory_name, $directory_id, $published_status));
+    }
 
     echo '<div class="wrap">';
     echo "<h2>" . sprintf(__('Manage names for %s', 'name-directory'), $directory['name']) . "</h2>";
@@ -807,11 +824,12 @@ function name_directory_names()
     if($show_all_names)
     {
         ?>
-        <p>
-            <a class='s_all' href='<?php echo $wp_url_path; ?>&status=all'><?php _e('all', 'name-directory'); ?></a> |
-            <a class='s_published' href='<?php echo $wp_url_path; ?>&status=published'><?php _e('published', 'name-directory'); ?></a> |
-            <a class='s_unpublished' href='<?php echo $wp_url_path; ?>&status=unpublished'><?php _e('unpublished', 'name-directory'); ?></a>
-        </p>
+        <hr class="wp-header-end">
+        <ul class="subsubsub">
+            <li><a class='s_all' href='<?php echo $wp_url_path; ?>&status=all'><?php _e('all', 'name-directory'); ?></a> |</li>
+            <li><a class='s_published' href='<?php echo $wp_url_path; ?>&status=published'><?php _e('published', 'name-directory'); ?></a> |</li>
+            <li><a class='s_unpublished' href='<?php echo $wp_url_path; ?>&status=unpublished'><?php _e('unpublished', 'name-directory'); ?></a></li>
+        </ul>
 
         <?php
         $name_filter = array();
@@ -847,7 +865,7 @@ function name_directory_names()
             echo "<input type='hidden' name='" . htmlspecialchars($key_name) . "' value='" . htmlspecialchars($value) . "' />";
         }
         echo "<input type='search' class='tagsdiv newtag' name='s' id='name-directory-search-input-box' value='" . $search_value . "' placeholder='" . __('Search', 'name-directory') . "...' />";
-        echo "<input type='submit' id='name-directory-search-input-button' class='button' value='" . __('Search', 'name-directory') . "' />";
+        echo "<input type='submit' id='name-directory-search-input-button' class='button' value='" . __('Search name', 'name-directory') . "' />";
 
 
         echo '</p>';
@@ -924,6 +942,11 @@ function name_directory_names()
         <p>&nbsp;</p>
 
         <?php
+        if( ! empty( $name_directory_settings['use_namedirectory_admin_pagination'] ) )
+        {
+            echo name_directory_admin_pagination($num_of_pages, $pagenum, $total_names);
+        }
+
     } else {
         echo "<p>";
         echo __('You are currently in editing or adding-mode, so not all the names are shown.', 'name-directory');
@@ -931,7 +954,7 @@ function name_directory_names()
         echo "</p>";
     }
 
-    wp_add_inline_script('name_directory_admin', "jQuery('" . $emphasis_class . "').css('font-weight', 'bold');");
+    wp_add_inline_script('name_directory_admin', "jQuery('." . $emphasis_class . "').css('font-weight', 'bold');");
 
     if(! empty($_GET['edit_name']))
     {
