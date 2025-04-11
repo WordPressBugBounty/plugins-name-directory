@@ -1287,6 +1287,8 @@ function name_directory_export()
  */
 function name_directory_ajax_switch_name_published_status()
 {
+    check_ajax_referer('name_directory_nonce', 'ndnonce', true);
+
     if(! name_directory_is_control_allowed() )
     {
         wp_die( __('You do not have sufficient permissions to access this page.', 'name-directory') );
@@ -1309,14 +1311,16 @@ function name_directory_ajax_switch_name_published_status()
  */
 function name_directory_admin_add_resources()
 {
-    $admin_js_translation = array(
+    $admin_vars = array(
         'delete_question' => __('Are you sure you want to delete this name directory?', 'name-directory'),
         'empty_directory_on_import' => __('Remove all the entries of this directory before starting the import', 'name-directory'),
         'use_utf8_import' => __('Use special import option (use only when importing has failed before and if you are using non-latin characters)', 'name-directory'),
+        'ajaxurl' => admin_url('admin-ajax.php'),
+        'nd_ajax_nonce' => wp_create_nonce('name_directory_nonce')
     );
 
-    wp_register_script('name_directory_admin', plugins_url('name_directory_admin.js', __FILE__), array('jquery'), '1.0', true);
-    wp_localize_script('name_directory_admin', 'name_directory_translation', $admin_js_translation);
+    wp_register_script('name_directory_admin', plugins_url('name_directory_admin.js', __FILE__), array('jquery'), '1.1', true);
+    wp_localize_script('name_directory_admin', 'name_directory_adminjs', $admin_vars);
     wp_enqueue_script('name_directory_admin');
 
     wp_enqueue_style('name_directory_admin', plugins_url('name_directory_admin.css', __FILE__), '', '1.0');

@@ -7,7 +7,7 @@ Tags: glossary, dictionary, index, directory, names
 Requires at least: 3.0.1
 Requires PHP: 5.3
 Tested up to: 6.8
-Stable tag: 1.30.0
+Stable tag: 1.30.1
 
 Name directory (glossary) with many options like multiple directories, integrated search, non-latin characters, recaptcha, HTML editor and many more.
 
@@ -263,6 +263,11 @@ The Patchstack team helps validate, triage and handle any security vulnerabiliti
 
 
 == Changelog ==
+
+= 1.30.1 | April 11, 2025 =
+ * Enhancement: Use admin-ajax as JS variable
+ * Enhancement: Use nonces when switching name-status (ajax calls)
+ * Enhancement: Updated the javascript a bit
 
 = 1.30.0 | April 6, 2025 =
  * Feature: Pagination (finally?) in the WP-admin (as proposed by @boomlab)
