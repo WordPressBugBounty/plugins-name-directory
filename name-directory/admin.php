@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) exit;
+
 add_action('admin_menu', 'name_directory_register_menu_entry');
 add_action('admin_enqueue_scripts', 'name_directory_admin_add_resources');
 add_action('wp_ajax_name_directory_ajax_names', 'name_directory_names');
@@ -58,7 +60,7 @@ function name_directory_options()
     $sub_page = '';
     if( ! empty( $_GET['sub'] ) )
     {
-        $sub_page = $_GET['sub'];
+        $sub_page = wp_unslash($_GET['sub']);
     }
 
     switch( $sub_page )
@@ -101,9 +103,10 @@ function name_directory_show_list()
 
     if(! empty( $_GET['delete_dir'] ) && is_numeric( $_GET['delete_dir'] ) && check_admin_referer('name-directory-action','secnonce') )
     {
-        $name = $wpdb->get_var(sprintf("SELECT `name` FROM %s WHERE id=%d", $name_directory_table_directory, $_GET['delete_dir']));
-        $wpdb->delete($name_directory_table_directory, array('id' => $_GET['delete_dir']), array('%d'));
-        $wpdb->delete($name_directory_table_directory_name, array('directory' => $_GET['delete_dir']), array('%d'));
+        $delete_dir = intval($_GET['delete_dir']);
+        $name = $wpdb->get_var(sprintf("SELECT `name` FROM %s WHERE id=%d", $name_directory_table_directory, $delete_dir));
+        $wpdb->delete($name_directory_table_directory, array('id' => $delete_dir), array('%d'));
+        $wpdb->delete($name_directory_table_directory_name, array('directory' => $delete_dir), array('%d'));
         echo "<div class='updated'><p><strong>"
             . sprintf(__('Name directory %s and all entries deleted', 'name-directory'), "<i>" . $name . "</i>")
             . "</strong></p></div>";
@@ -845,7 +848,7 @@ function name_directory_names()
             $num_names = count($names);
         }
 
-        $parsed_url = parse_url($_SERVER['REQUEST_URI']);
+        $parsed_url = wp_parse_url($_SERVER['REQUEST_URI']);
         $search_get_url = array();
         if(! empty($parsed_url['query']))
         {
@@ -1264,11 +1267,11 @@ function name_directory_export()
     echo '</tbody></table>';
 
     /* Notify the user of possible not-working export functionality */
-    if(stripos($_SERVER['HTTP_USER_AGENT'], 'Chrome') === false && stripos($_SERVER['HTTP_USER_AGENT'], 'Firefox') === false)
+    if(stripos($_SERVER['HTTP_USER_AGENT'], 'WebKit') === false && stripos($_SERVER['HTTP_USER_AGENT'], 'Firefox') === false)
     {
         echo '<div class="notice notice-warning"><p>';
-        echo __('Name Directory Export works best in Mozilla Firefox, Google Chrome and Internet Explorer 10+.', 'name-directory') . ' ';
-        echo __('If you encounter problems (or it does not export) in Internet Explorer or Microsoft Edge, please try another browser.', 'name-directory');
+        echo __('Name Directory Export works best in modern browsers.', 'name-directory') . ' ';
+        echo __('If you encounter problems (or it does not export) in browsers like Internet Explorer or older, please try another browser.', 'name-directory');
         echo '</div>';
     }
 
