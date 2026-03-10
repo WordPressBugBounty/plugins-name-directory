@@ -600,12 +600,16 @@ function name_directory_admin_pagination($num_of_pages, $pagenum, $total_names)
  * @return mixed
  */
 function name_directory_deep_sanitize_public_user_input($input, $allowed_tags = null) {
+
     $raw = trim( wp_unslash( (string)$input ) );
+
+    $decoded = html_entity_decode( $raw, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
 
     if( ! is_array( $allowed_tags ) ) {
         $allowed_tags = array('p' => array(), 'br' => array(), 'strong'=>array(), 'em'=>array());
     }
-    return wp_kses( $raw, $allowed_tags );
+
+    return wp_kses( $decoded, $allowed_tags );
 }
 
 function name_directory_get_html_tag_options() {

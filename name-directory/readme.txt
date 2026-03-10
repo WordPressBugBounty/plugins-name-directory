@@ -7,7 +7,7 @@ Tags: glossary, dictionary, index, directory, names
 Requires at least: 3.0.1
 Requires PHP: 5.3
 Tested up to: 7.0
-Stable tag: 1.32.1
+Stable tag: 1.33.0
 
 Name directory (glossary) with many options like multiple directories, integrated search, non-latin characters, recaptcha, HTML editor and many more.
 
@@ -262,6 +262,11 @@ The Patchstack team helps validate, triage and handle any security vulnerabiliti
 
 
 == Changelog ==
+
+= 1.33.0 | March 7, 2026 =
+ * Enhancement: Tested with new WordPress 7.0, beta 2
+ * Enhancement: Better use routing in admin
+ * Security: Fixed issue passed by WordFence researcher Youssef Elouaer
 
 = 1.32.1 | February 3, 2026 =
  * Security: Fixed issue passed by WordFence researcher duy.thai (thank you WordFence team)

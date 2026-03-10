@@ -60,7 +60,7 @@ function name_directory_options()
     $sub_page = '';
     if( ! empty( $_GET['sub'] ) )
     {
-        $sub_page = wp_unslash($_GET['sub']);
+        $sub_page = sanitize_text_field($_GET['sub']);
     }
 
     switch( $sub_page )
@@ -113,7 +113,7 @@ function name_directory_show_list()
     }
 
     $wp_file = admin_url('admin.php');
-    $wp_page = $_GET['page'];
+    $wp_page = sanitize_text_field($_GET['page']);
     $wp_url_path = sprintf("%s?page=%s", $wp_file, $wp_page);
     $wp_new_url = sprintf("%s&sub=%s", $wp_url_path, 'new-directory');
     $wp_nonce = wp_create_nonce('name-directory-action');
@@ -321,8 +321,8 @@ function name_directory_edit($mode = 'edit')
     global $name_directory_table_directory;
 
     $wp_file = admin_url('admin.php');
-    $wp_page = $_GET['page'];
-    $wp_sub  = $_GET['sub'];
+    $wp_page = sanitize_text_field($_GET['page']);
+    $wp_sub  = sanitize_text_field($_GET['sub']);
     $overview_url = sprintf("%s?page=%s", $wp_file, $wp_page, $wp_sub);
     $wp_url_path = sprintf("%s?page=%s", $wp_file, $wp_page);
 
@@ -656,8 +656,8 @@ function name_directory_names()
     }
 
     $wp_file = admin_url('admin.php');
-    $wp_page = $_GET['page'];
-    $wp_sub  = $_GET['sub'];
+    $wp_page = sanitize_text_field($_GET['page']);
+    $wp_sub  = sanitize_text_field($_GET['sub']);
     $overview_url = sprintf("%s?page=%s", $wp_file, $wp_page);
 
     if(! array_key_exists('dir', $_GET)) {
@@ -927,8 +927,8 @@ function name_directory_names()
                         <a class='button button-small' href='" . $wp_url_path . "&delete_name=%d&secnonce=%s'>%s</a>
                     </td><td>%s</td>
                 </tr>",
-                    html_entity_decode(stripslashes($name->name)),
-                    html_entity_decode(stripslashes($name->description)),
+                    esc_html(stripslashes($name->name)),
+                    esc_html(stripslashes($name->description)),
                     sanitize_text_field(esc_html($name->submitted_by)),
                     $name->id,
                     $name->id,
@@ -1014,7 +1014,7 @@ function name_directory_quick_import()
             array('%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%d', '%d', '%s', '%s', '%s', '%d', '%d')
         );
 
-        $import_url = sprintf("%s?page=%s&sub=%s&dir=%d", admin_url('admin.php'), $_GET['page'], 'import', $wpdb->insert_id);
+        $import_url = sprintf("%s?page=%s&sub=%s&dir=%d", admin_url('admin.php'), sanitize_text_field($_GET['page']), 'import', $wpdb->insert_id);
 
         echo "<div class='updated'><p>"
             . sprintf(__('Directory %s created.', 'name-directory'), "<i>" . $cleaned_name . "</i>")
@@ -1027,7 +1027,7 @@ function name_directory_quick_import()
     $wp_nonce = wp_create_nonce('name-directory-quick');
     ?>
 
-    <form name="add_name" method="post" action="<?php echo sprintf("%s?page=%s&sub=quick-import&quicknonce=%s", admin_url('admin.php'), $_GET['page'], $wp_nonce); ?>">
+    <form name="add_name" method="post" action="<?php echo sprintf("%s?page=%s&sub=quick-import&quicknonce=%s", admin_url('admin.php'), sanitize_text_field($_GET['page']), $wp_nonce); ?>">
         <table class="wp-list-table widefat" cellpadding="0">
             <thead>
             <tr>
@@ -1179,8 +1179,8 @@ function name_directory_import()
     }
 
     $wp_file = admin_url('admin.php');
-    $wp_page = $_GET['page'];
-    $wp_sub  = $_GET['sub'];
+    $wp_page = sanitize_text_field($_GET['page']);
+    $wp_sub  = sanitize_text_field($_GET['sub']);
     $overview_url = sprintf("%s?page=%s", $wp_file, $wp_page);
     $wp_url_path = sprintf("%s?page=%s&sub=%s&dir=%d", $wp_file, $wp_page, $wp_sub, $directory_id);
     $wp_ndir_path = sprintf("%s?page=%s&sub=%s&dir=%d", $wp_file, $wp_page, 'manage-directory', $directory_id);
