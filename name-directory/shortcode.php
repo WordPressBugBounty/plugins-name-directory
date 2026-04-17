@@ -104,7 +104,11 @@ function name_directory_show_submit_form($directory, $overview_url)
         $recaptcha_html = "<div class='name_directory_forminput'><br><div class='g-recaptcha' data-sitekey='" . $name_directory_settings['recaptcha_sitekey'] . "'></div></div>";
     }
 
+    /* If submissions are off, just return */
     $directory_info = name_directory_get_directory_properties($directory);
+    if( empty($directory_info['show_submit_form']) ) {
+        return '';
+    }
 
     if(empty($directory_info['name_term_singular']))
     {
@@ -296,6 +300,7 @@ function name_directory_show_directory($attributes)
 
     $letter_url = name_directory_make_plugin_url('name_directory_startswith', 'name-directory-search-value', $dir);
     $directory = name_directory_get_directory_properties($dir);
+
     if($directory === null)
     {
         echo sprintf(__('Error: Name Directory #%d does not exist (anymore). If you are the webmaster, please change the shortcode.', 'name-directory'), $dir);
@@ -315,7 +320,7 @@ function name_directory_show_directory($attributes)
     $names = name_directory_get_directory_names($directory, $name_filter);
     $num_names = count($names);
 
-    if(isset($_GET['show_submitform']))
+    if(isset($_GET['show_submitform']) && ! empty($directory['show_submit_form']))
     {
         return name_directory_show_submit_form($dir, name_directory_make_plugin_url('','show_submitform', $dir));
     }
