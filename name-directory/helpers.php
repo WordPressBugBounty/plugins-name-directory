@@ -387,10 +387,10 @@ function name_directory_get_single_name($id)
  * Notify the admin that a new name has been submitted to the directory and
  * that this name has to be reviewed first before publishing
  */
-function name_directory_notify_admin_of_new_submission($directory, $input)
+function name_directory_notify_admin_of_new_submission($directory_id, $input)
 {
     $notification_address = get_option('admin_email');
-    $directory = name_directory_get_directory_properties($directory);
+    $directory = name_directory_get_directory_properties($directory_id);
     if(! empty($directory['email_for_submission'])) {
         $notification_address = $directory['email_for_submission'];
     }
@@ -404,7 +404,7 @@ function name_directory_notify_admin_of_new_submission($directory, $input)
         sprintf("%s: %s", __('Submitted by', 'name-directory'), sanitize_text_field($input['name_directory_submitter'])) . "\n\n" .
         __('This new submission does not have the published status.', 'name-directory') . ' ' .
         __('Please login to your WordPress admin to review and accept the submission.', 'name-directory') . "\n\n" .
-        sprintf("Link: %s/wp-admin/admin.php?page=name-directory&sub=manage-directory&dir=%d&status=unpublished", get_option('home'), $directory) . "\n\n" .
+        sprintf("Link: %s/wp-admin/admin.php?page=name-directory&sub=manage-directory&dir=%d&status=unpublished", get_option('home'), $directory_id) . "\n\n" .
         sprintf("Your %s WordPress site", get_option('blogname')));
 }
 

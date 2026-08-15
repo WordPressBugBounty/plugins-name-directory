@@ -6,8 +6,8 @@ Donate link: https://ko-fi.com/jeroenpeters
 Tags: glossary, dictionary, index, directory, names
 Requires at least: 3.0.1
 Requires PHP: 5.3
-Tested up to: 7.0
-Stable tag: 1.33.1
+Tested up to: 7.1
+Stable tag: 1.34.0
 
 Name directory (glossary) with many options like multiple directories, integrated search, non-latin characters, recaptcha, HTML editor and many more.
 
@@ -263,6 +263,15 @@ The Patchstack team helps validate, triage and handle any security vulnerabiliti
 
 
 == Changelog ==
+
+= 1.34.0 | August 15, 2026 =
+ * Added ability to show the submitter's name in the directory (thank you @ryankline)
+ * Bugfix: Fixed a bug where the ID of the directory might have contained a wrong number in the approve-suggestion-email
+ * Enhancement: Tested with WordPress 7.1
+
+= 1.33.2 | June 13, 2026 =
+ * Enhancement: Tested with WordPress 7.0 final
+ * Enhancement: Tested with new WordPress 7.1 nightly build
 
 = 1.33.1 | April 17, 2026 =
  * Bugfix: Don't show the Submit form if it has been disabled in the settings (thank you Jibbius)

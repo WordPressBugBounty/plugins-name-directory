@@ -70,7 +70,12 @@ function name_directory_render_namebox($entry, $directory, $tag = 'strong')
     }
     if(! empty($directory['show_submitter_name']) && ! empty($entry['submitted_by']))
     {
-        echo "<small>" . __('Submitted by:', 'name-directory') . " " . htmlspecialchars($entry['submitted_by']) . "</small>";
+        $submitted_by_label = __('Submitted by:', 'name-directory');
+        if(! empty($directory['submitted_by_term']))
+        {
+            $submitted_by_label = trim($directory['submitted_by_term']);
+        }
+        echo "<small>" . esc_html($submitted_by_label) . " " . htmlspecialchars($entry['submitted_by']) . "</small>";
     }
     echo '</div>';
 }
@@ -126,6 +131,10 @@ function name_directory_show_submit_form($directory, $overview_url)
     $required = __('Required', 'name-directory');
     $description = __('Description', 'name-directory');
     $your_name = __('Submitter name', 'name-directory');
+    if(! empty($directory_info['submitted_by_term']))
+    {
+        $your_name = trim($directory_info['submitted_by_term']) . " (" . $your_name . ")";
+    }
     $submit = __('Submit', 'name-directory');
 
     $result_class = '';

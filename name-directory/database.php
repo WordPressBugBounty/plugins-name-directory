@@ -44,6 +44,7 @@ function name_directory_db_tables()
             email_for_submission VARCHAR( 255 ) NULL,
             name_term VARCHAR( 255 ) NULL,
             name_term_singular VARCHAR( 255 ) NULL,
+            submitted_by_term VARCHAR( 255 ) NULL,
             check_submitted_names_first BOOLEAN NULL DEFAULT 1,
             UNIQUE KEY id (id),
             PRIMARY KEY (id));",
@@ -130,7 +131,8 @@ function name_directory_db_install_demo_data()
             'check_submitted_names_first'   => 1,
             'description'                   => 'Cool budgie names',
             'name_term'                     => 'budgies',
-            'name_term_singular'            => 'budgie'
+            'name_term_singular'            => 'budgie',
+            'submitted_by_term'             => 'Birdwatcher'
         ));
         $wpdb->insert($name_directory_table_directory_name, array(
             'directory'     => 1,

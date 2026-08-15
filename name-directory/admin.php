@@ -151,6 +151,7 @@ function name_directory_show_list()
                 'email_for_submission'          => sanitize_email($_POST['email_for_submission']),
                 'name_term'                     => sanitize_text_field($_POST['name_term']),
                 'name_term_singular'            => sanitize_text_field($_POST['name_term_singular']),
+                'submitted_by_term'             => sanitize_text_field($_POST['submitted_by_term']),
                 'check_submitted_names_first'   => intval($_POST['check_submitted_names_first']),
             ),
             array('id' => intval($_POST['dir_id']))
@@ -198,9 +199,10 @@ function name_directory_show_list()
                     'email_for_submission'          => sanitize_text_field($_POST['email_for_submission']),
                     'name_term'                     => sanitize_text_field($_POST['name_term']),
                     'name_term_singular'            => sanitize_text_field($_POST['name_term_singular']),
+                    'submitted_by_term'             => sanitize_text_field($_POST['submitted_by_term']),
                     'check_submitted_names_first'   => (int)$_POST['check_submitted_names_first'],
                 ),
-                array('%s', '%s', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%s', '%s', '%s', '%d')
+                array('%s', '%s', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%d', '%s', '%s', '%s', '%s', '%d')
             );
 
             echo "<div class='updated'><p>"
@@ -500,13 +502,19 @@ function name_directory_edit($mode = 'edit')
                 <td><input type="text" name="name_term_singular" value="<?php echo (! empty($directory['name_term_singular']) ? $directory['name_term_singular'] : ''); ?>" size="20"></td>
             </tr>
             <tr>
+                <th valign="top"><?php echo __('Submitter term', 'name-directory'); ?><br>
+                    <small><?php echo __('Alternative for the submitter label, i.e. Club member', 'name-directory'); ?></small></th>
+                <td><input type="text" name="submitted_by_term" value="<?php echo (! empty($directory['submitted_by_term']) ? esc_attr($directory['submitted_by_term']) : ''); ?>" size="20">
+                    <br>
+                    <small><?php echo __('If you provide an alternative, your website will not display "Submitted by:", but: ', 'name-directory'); ?> "<i>Club member: Henk</i>"</small></td>
+            </tr>
+            <tr>
                 <td>
                     <?php wp_nonce_field( 'name_directory_dirmanagement','name_directory_adminnonce' ); ?>
                 </td>
                 <td>
                     <input type="submit" name="submit" class="button button-primary button-large"
                            value="<?php echo $button_text; ?>" />
-
                     <a class='button button-large' href='<?php echo $overview_url; ?>'>
                         <?php echo __('Cancel', 'name-directory'); ?>
                     </a>
