@@ -75,7 +75,7 @@ function name_directory_render_namebox($entry, $directory, $tag = 'strong')
         {
             $submitted_by_label = trim($directory['submitted_by_term']);
         }
-        echo "<small>" . esc_html($submitted_by_label) . " " . htmlspecialchars($entry['submitted_by']) . "</small>";
+        echo "<small>" . esc_html($submitted_by_label) . " " . esc_html($entry['submitted_by']) . "</small>";
     }
     echo '</div>';
 }
@@ -318,8 +318,10 @@ function name_directory_show_directory($attributes)
 
     if(! empty($_GET['name-directory-search-value']) && ! empty($_GET['dir']) && $_GET['dir'] == $dir)
     {
-        $search_value = trim(htmlspecialchars($_GET['name-directory-search-value']));
-        $name_filter['containing'] = $search_value;
+        $raw_search_value = trim($_GET['name-directory-search-value']);
+        $search_value = esc_html($raw_search_value);
+        $search_value_js = esc_js($raw_search_value);
+        $name_filter['containing'] = $raw_search_value;
         if(! empty($directory['search_highlight']))
         {
             $highlight_search_term = true;
@@ -421,7 +423,7 @@ function name_directory_show_directory($attributes)
             {
                 continue;
             }
-            echo "<input type='hidden' name='" . htmlspecialchars($key_name) . "' value='" . htmlspecialchars($value) . "' />";
+            echo "<input type='hidden' name='" . esc_attr($key_name) . "' value='" . esc_attr($value) . "' />";
         }
         echo "<input type='search' autocomplete='off' aria-description='" . __('Directory names below will match your searchcriteria after submit', 'name-directory') . "' name='name-directory-search-value' id='name-directory-search-input-box' placeholder='" . __('Search for...', 'name-directory') . "' />";
         echo "<input type='hidden' name='dir' value='" . (int)$directory['id'] . "' />";
@@ -447,12 +449,12 @@ function name_directory_show_directory($attributes)
     else if(empty($name_filter['character']) && ! empty($search_value))
     {
         if(empty($directory['name_term'])) {
-            echo sprintf(__('There are %d names in this directory containing the search term %s.', 'name-directory'), $num_names, "<em>" . stripslashes($search_value) . "</em>");
+            echo sprintf(__('There are %d names in this directory containing the search term %s.', 'name-directory'), $num_names, "<em>" . $search_value . "</em>");
         } else {
             if( $num_names == 1 ) {
-                echo sprintf(__('There is currently %d %s in this directory containing the search term %s.', 'name-directory'), $num_names, $directory['name_term_singular'], "<em>" . stripslashes($search_value) . "</em>");
+                echo sprintf(__('There is currently %d %s in this directory containing the search term %s.', 'name-directory'), $num_names, $directory['name_term_singular'], "<em>" . $search_value . "</em>");
             } else {
-                echo sprintf(__('There are currently %d %s in this directory containing the search term %s.', 'name-directory'), $num_names, $directory['name_term'], "<em>" . stripslashes($search_value) . "</em>");
+                echo sprintf(__('There are currently %d %s in this directory containing the search term %s.', 'name-directory'), $num_names, $directory['name_term'], "<em>" . $search_value . "</em>");
             }
         }
 
@@ -586,7 +588,7 @@ function name_directory_show_directory($attributes)
 
         wp_enqueue_script( 'name-directory-highlight', 'https://cdn.jsdelivr.net/mark.js/8.6.0/mark.min.js', array() );
         wp_add_inline_script( 'name-directory-highlight', 'var markInstance = new Mark(document.querySelector(".name_directory_names"));
-            markInstance.mark("' . $search_value . '");');
+        markInstance.mark("' . $search_value_js . '");');
     }
 
 	return ob_get_clean();

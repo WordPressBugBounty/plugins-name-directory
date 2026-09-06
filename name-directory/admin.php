@@ -827,7 +827,7 @@ function name_directory_names()
     <?php
 
     /* Don't show all the names when the user explicitly started the adding-mode */
-    if(! empty($_GET['display_all_names']) && htmlspecialchars($_GET['display_all_names']) == "no")
+    if(! empty($_GET['display_all_names']) && sanitize_text_field($_GET['display_all_names']) == "no")
     {
         $show_all_names = false;
     }
@@ -849,8 +849,8 @@ function name_directory_names()
         $search_value = '';
         if(! empty($_GET['s']))
         {
-            $search_value = htmlspecialchars($_GET['s']);
-            $name_filter['containing'] = $search_value;
+            $search_value = esc_attr($_GET['s']);
+            $name_filter['containing'] = $_GET['s'];
 
             $names = name_directory_get_directory_names($directory, $name_filter);
             $num_names = count($names);
@@ -873,7 +873,7 @@ function name_directory_names()
             {
                 continue;
             }
-            echo "<input type='hidden' name='" . htmlspecialchars($key_name) . "' value='" . htmlspecialchars($value) . "' />";
+            echo "<input type='hidden' name='" . esc_attr($key_name) . "' value='" . esc_attr($value) . "' />";
         }
         echo "<input type='search' class='tagsdiv newtag' name='s' id='name-directory-search-input-box' value='" . $search_value . "' placeholder='" . __('Search', 'name-directory') . "...' />";
         echo "<input type='submit' id='name-directory-search-input-button' class='button' value='" . __('Search name', 'name-directory') . "' />";

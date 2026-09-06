@@ -7,7 +7,7 @@ Tags: glossary, dictionary, index, directory, names
 Requires at least: 3.0.1
 Requires PHP: 5.3
 Tested up to: 7.1
-Stable tag: 1.34.0
+Stable tag: 1.34.1
 
 Name directory (glossary) with many options like multiple directories, integrated search, non-latin characters, recaptcha, HTML editor and many more.
 
@@ -263,6 +263,9 @@ The Patchstack team helps validate, triage and handle any security vulnerabiliti
 
 
 == Changelog ==
+
+= 1.34.1 | September 5, 2026 =
+ * Bugfix: Patched a PHP 7.4 specific security issue, thanks to PatchStack researcher hhhai for reporting this issue
 
 = 1.34.0 | August 15, 2026 =
  * Added ability to show the submitter's name in the directory (thank you @ryankline)
