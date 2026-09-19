@@ -7,7 +7,7 @@ Tags: glossary, dictionary, index, directory, names
 Requires at least: 3.0.1
 Requires PHP: 5.3
 Tested up to: 7.1
-Stable tag: 1.34.1
+Stable tag: 1.34.2
 
 Name directory (glossary) with many options like multiple directories, integrated search, non-latin characters, recaptcha, HTML editor and many more.
 
@@ -184,7 +184,7 @@ Yes, every now and then I come across an installed version of the plugin. Here i
 
 1. [Dutch Budgie website - How to name your bird](https://www.parkietenvilla.nl/namenlijst/)
 1. [Alabama Orthopaedic Society - Member list](https://aosdocs.com/find-an-orthopaedist/)
-1. [Hattem24 Begrippenlijst - Nieuws over Hattem](https://hattem24.nl/begrippenlijst/) (Dutch local newssite with a glossary)
+1. Hattem24 Begrippenlijst (Dutch local newssite with a glossary)
 1. [Convertus - Paid Search Terms](https://www.convertus.com/search-glossary/)
 1. [Venlo's Waordeboek (Dutch Limburgian Dialect Dictionary)](https://veldekevenlo.nl/waordebook/)
 1. [Donegal Member Directory (multiple directories)](https://thisisdonegal.ie/members-directory/)
@@ -263,6 +263,10 @@ The Patchstack team helps validate, triage and handle any security vulnerabiliti
 
 
 == Changelog ==
+
+= 1.34.2 | September 19, 2026 =
+ * Enhancement: Code optimization
+ * Security: Secured a few extra variables
 
 = 1.34.1 | September 5, 2026 =
  * Bugfix: Patched a PHP 7.4 specific security issue, thanks to PatchStack researcher hhhai for reporting this issue

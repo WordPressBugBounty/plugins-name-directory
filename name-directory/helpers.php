@@ -299,20 +299,22 @@ function name_directory_get_directory_by_search_query($search_query, $include_de
 	global $wpdb;
 	global $name_directory_table_directory_name;
 
-	$sql_filter = "";
-
 	if(! empty($wildcard))
 	{
-		$search_query = "%" . $search_query . "%";
+		$search_query = "%" . $wpdb->esc_like($search_query) . "%";
+	}
+	else
+	{
+		$search_query = $wpdb->esc_like($search_query);
 	}
 
 	if(empty($include_description))
 	{
-		$sql_filter = " AND (`name` LIKE '" . $search_query . "') ";
+		$sql_filter = $wpdb->prepare(" AND (`name` LIKE %s) ", $search_query);
 	}
 	else
 	{
-		$sql_filter = " AND (`name` LIKE '" . $search_query . "' OR `description` LIKE '" . $search_query . "') ";
+		$sql_filter = $wpdb->prepare(" AND (`name` LIKE %s OR `description` LIKE %s) ", $search_query, $search_query);
 	}
 
 	$directories = $wpdb->get_results(sprintf("

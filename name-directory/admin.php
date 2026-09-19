@@ -550,7 +550,7 @@ function name_directory_names()
 
     if(! empty($_GET['delete_name']) && is_numeric($_GET['delete_name']) && check_admin_referer('name-directory-action','secnonce'))
     {
-        $name = $wpdb->get_var(sprintf("SELECT `name` FROM %s WHERE id=%d", $name_directory_table_directory_name, $_GET['delete_name']));
+        $name = $wpdb->get_var(sprintf("SELECT `name` FROM %s WHERE id=%d", $name_directory_table_directory_name, intval($_GET['delete_name'])));
         $wpdb->delete($name_directory_table_directory_name, array('id' => $_GET['delete_name']), array('%d'));
         echo "<div class='updated'><p>"
             . sprintf(__('Name %s deleted', 'name-directory'), "<i>" . esc_html($name) . "</i>")
@@ -584,7 +584,7 @@ function name_directory_names()
 
         if($_POST['action'] == "name_directory_ajax_names")
         {
-            $refresh_url = str_replace('edit_name=', '', $_SERVER['HTTP_REFERER']);
+            $refresh_url = esc_url(str_replace('edit_name=', '', $_SERVER['HTTP_REFERER']));
             echo '<p>';
             echo sprintf(__('Name %s updated', 'name-directory'), "<i>" . esc_html($_POST['name']) . "</i>");
             echo '. <small><i>' . __('Will be visible when the page is refreshed.', 'name-directory') . '</i> ';
@@ -722,7 +722,7 @@ function name_directory_names()
     if(! empty($_GET['edit_name']))
     {
         $name = $wpdb->get_row(sprintf("SELECT * FROM `%s` WHERE `id` = %d",
-            $name_directory_table_directory_name, $_GET['edit_name']), ARRAY_A);
+                    $name_directory_table_directory_name, intval($_GET['edit_name'])), ARRAY_A);
         $table_heading = __('Edit a name', 'name-directory');
         $save_button_txt = __('Save name', 'name-directory');
         $show_all_names = false;

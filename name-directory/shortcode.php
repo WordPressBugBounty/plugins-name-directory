@@ -190,7 +190,7 @@ function name_directory_show_submit_form($directory, $overview_url)
         {
             $result_class = 'form-result-error';
             $form_result = sprintf(__('Sorry, %s was already on the list so your submission was not sent.', 'name-directory'),
-                '<i>' . esc_sql($_POST['name_directory_name']) . '</i>');
+                            '<i>' . esc_html($_POST['name_directory_name']) . '</i>');
         }
         else
         {
