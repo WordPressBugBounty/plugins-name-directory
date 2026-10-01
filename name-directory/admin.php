@@ -576,6 +576,7 @@ function name_directory_names()
                 'name'          => wp_kses_post(stripslashes($_POST['name'])),
                 'letter'        => name_directory_get_first_char($_POST['name']),
                 'description'   => wp_kses_post(stripslashes($description)),
+                'shortcodes_enabled' => ! empty($_POST['shortcodes_enabled']) ? 1 : 0,
                 'published'     => (int)$_POST['published'],
                 'submitted_by'  => wp_kses_post($_POST['submitted_by']),
             ),
@@ -630,10 +631,11 @@ function name_directory_names()
                 'name'          => wp_kses_post($_POST['name']),
                 'letter'        => name_directory_get_first_char(wp_kses_post($_POST['name'])),
                 'description'   => wp_kses_post($description),
+                'shortcodes_enabled' => ! empty($_POST['shortcodes_enabled']) ? 1 : 0,
                 'published'     => (int)$_POST['published'],
                 'submitted_by'  => wp_kses_post($_POST['submitted_by']),
             ),
-            array('%d', '%s', '%s', '%s', '%d', '%s')
+            array('%d', '%s', '%s', '%s', '%d', '%d', '%s')
         );
 
         if($_POST['action'] == "name_directory_ajax_names")
@@ -731,7 +733,7 @@ function name_directory_names()
     {
         $table_heading = __('Add a new name', 'name-directory');
         $save_button_txt = __('Add name', 'name-directory');
-        $name = array('name' => null, 'description' => '', 'submitted_by' => null);
+        $name = array('name' => null, 'description' => '', 'submitted_by' => null, 'shortcodes_enabled' => 0);
     }
 
     ?>
@@ -791,6 +793,13 @@ function name_directory_names()
                         wp_editor($name['description'], 'description', array('textarea_rows' => 5, 'textarea_name' => 'description'));
                     }
                     ?>
+                    <br>
+                    <label>
+                        <input type="checkbox" name="shortcodes_enabled" value="1" <?php echo ! empty($name['shortcodes_enabled']) ? 'checked="checked"' : ''; ?>>
+                        <?php echo __('Allow shortcodes in this description', 'name-directory'); ?>
+                    </label>
+                    <br>
+                    <small><?php echo __('Disabled by default for new entries. Only enable this for descriptions you trust.', 'name-directory'); ?></small>
                     <small><strong><?php echo __('Please be careful!', 'name-directory'); ?></strong>
                         <?php echo __('HTML markup is allowed here, but please be aware it may affect the way Name Directory or a name is displayed. Also, features like "Read more" may behave differently if you use i.e. images or tables in the description of an image.', 'name-directory'); ?></small></td>
             </tr>
@@ -1133,10 +1142,11 @@ function name_directory_import()
                     'name'          => sanitize_text_field($prepared_row['name']),
                     'letter'        => name_directory_get_first_char($prepared_row['name']),
                     'description'   => ! empty($prepared_row['description']) ? wp_kses_post($prepared_row['description']) : '',
+                    'shortcodes_enabled' => 0,
                     'published'     => ! empty($prepared_row['published']) ? $prepared_row['published'] : '',
                     'submitted_by'  => ! empty($prepared_row['submitted_by']) ? sanitize_text_field($prepared_row['submitted_by']) : '',
                 ),
-                array('%d', '%s', '%s', '%s', '%d', '%s')
+                array('%d', '%s', '%s', '%s', '%d', '%d', '%s')
             );
 
             if($db_res === false)

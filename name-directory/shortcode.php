@@ -43,6 +43,7 @@ function name_directory_render_namebox($entry, $directory, $tag = 'strong')
     if(! empty($directory['show_description']) && ! empty($entry['description']))
     {
         $print_description = wp_kses_post(stripslashes($entry['description']));
+        $shortcodes_enabled = ! empty($entry['shortcodes_enabled']);
 
         /* This toggles the read more/less indicators, these need extra html */
         if(! empty($directory['nr_words_description']))
@@ -60,12 +61,20 @@ function name_directory_render_namebox($entry, $directory, $tag = 'strong')
             }
             else
             {
-                echo '<div role="definition">' . do_shortcode($short_desc) . '</div>';
+                if($shortcodes_enabled)
+                {
+                    $short_desc = do_shortcode($short_desc);
+                }
+                echo '<div role="definition">' . $short_desc . '</div>';
             }
 
         }
         else {
-            echo '<div role="definition">' . do_shortcode($print_description) . '</div>';
+            if($shortcodes_enabled)
+            {
+                $print_description = do_shortcode($print_description);
+            }
+            echo '<div role="definition">' . $print_description . '</div>';
         }
     }
     if(! empty($directory['show_submitter_name']) && ! empty($entry['submitted_by']))
@@ -209,8 +218,9 @@ function name_directory_show_submit_form($directory, $overview_url)
                     'description'   => name_directory_deep_sanitize_public_user_input($_POST['name_directory_description']),
                     'published'     => $published,
                     'submitted_by'  => name_directory_deep_sanitize_public_user_input($_POST['name_directory_submitter'], array()),
+                    'shortcodes_enabled' => 0,
                 ],
-                array('%d', '%s', '%s', '%s', '%d', '%s')
+                array('%d', '%s', '%s', '%s', '%d', '%s', '%d')
             );
 
             if(! empty($db_success))
@@ -285,6 +295,7 @@ function name_directory_show_directory($attributes)
         array('dir' => '1'),
         $attributes
     ));
+    $dir = (int) $dir;
 
     $name_directory_settings = get_option('name_directory_general_option');
 

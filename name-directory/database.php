@@ -15,9 +15,17 @@ if (! function_exists('add_action'))
  */
 function name_directory_db_tables()
 {
+    global $wpdb;
     global $name_directory_db_version;
     global $name_directory_table_directory;
     global $name_directory_table_directory_name;
+
+    $previous_db_version = get_option("name_directory_db_version");
+    $legacy_entries_max_id = 0;
+    if(! empty($previous_db_version) && version_compare($previous_db_version, $name_directory_db_version, '<'))
+    {
+        $legacy_entries_max_id = (int)$wpdb->get_var(sprintf("SELECT MAX(`id`) FROM `%s`", $name_directory_table_directory_name));
+    }
 
     $name_directory_table_queries = array("
         CREATE TABLE $name_directory_table_directory (
@@ -56,6 +64,7 @@ function name_directory_db_tables()
             description TEXT NULL ,
             published BOOL NOT NULL ,
             submitted_by VARCHAR( 255 ) NULL,
+            shortcodes_enabled BOOL NOT NULL DEFAULT 0,
             UNIQUE KEY id (id),
             PRIMARY KEY (id));"
     );
@@ -63,6 +72,16 @@ function name_directory_db_tables()
     require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 
     dbDelta( $name_directory_table_queries );
+
+    /* Preserve shortcode execution only for entries that existed before this migration. */
+    if($legacy_entries_max_id > 0)
+    {
+        $wpdb->query(sprintf(
+            "UPDATE `%s` SET `shortcodes_enabled` = 1 WHERE `id` <= %d",
+            $name_directory_table_directory_name,
+            $legacy_entries_max_id
+        ));
+    }
 
     update_option("name_directory_db_version", $name_directory_db_version);
 }
@@ -139,21 +158,24 @@ function name_directory_db_install_demo_data()
             'name'          => 'Navi',
             'letter'        => 'N',
             'description'   => 'Navi is a good aviator and navigator. A very strong and big budgie, almost English',
-            'published'     => 1
+            'published'     => 1,
+            'shortcodes_enabled' => 0
         ));
         $wpdb->insert($name_directory_table_directory_name, array(
             'directory'     => 1,
             'name'          => 'Mister',
             'letter'        => 'M',
             'description'   => 'Mister is a name which can only be assigned to a typical English Budgie. Big, strong and stringent.',
-            'published'     => 1
+            'published'     => 1,
+            'shortcodes_enabled' => 0
         ));
         $wpdb->insert($name_directory_table_directory_name, array(
             'directory'     => 1,
             'name'          => 'Isa',
             'letter'        => 'I',
             'description'   => 'Isa is a direct descent of Mister. As a fullblood daughter she is also a typical English Budgie.',
-            'published'     => 1
+            'published'     => 1,
+            'shortcodes_enabled' => 0
         ));
 
         name_directory_db_post_update_actions();

@@ -7,7 +7,7 @@ Tags: glossary, dictionary, index, directory, names
 Requires at least: 3.0.1
 Requires PHP: 5.3
 Tested up to: 7.1
-Stable tag: 1.34.2
+Stable tag: 1.34.3
 
 Name directory (glossary) with many options like multiple directories, integrated search, non-latin characters, recaptcha, HTML editor and many more.
 
@@ -263,6 +263,11 @@ The Patchstack team helps validate, triage and handle any security vulnerabiliti
 
 
 == Changelog ==
+
+= 1.34.3 | October 1st, 2026 =
+ * Security: Prevent new public submissions from executing shortcodes by default; shortcode execution can be enabled for trusted entries in the admin
+ * Security: Secured shortcode
+ * Enhancement: Tested with WordPress 7.2 alpha
 
 = 1.34.2 | September 19, 2026 =
  * Enhancement: Code optimization
@@ -835,4 +840,3 @@ The Patchstack team helps validate, triage and handle any security vulnerabiliti
 
 = 0.5 =
 * First version for private use
-
