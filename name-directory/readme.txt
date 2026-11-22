@@ -184,7 +184,7 @@ Yes, every now and then I come across an installed version of the plugin. Here i
 
 1. [Dutch Budgie website - How to name your bird](https://www.parkietenvilla.nl/namenlijst/)
 1. [Alabama Orthopaedic Society - Member list](https://aosdocs.com/find-an-orthopaedist/)
-1. Hattem24 Begrippenlijst (Dutch local newssite with a glossary)
+1. [Hattem24 Begrippenlijst](https://www.hattem24.nl/begrippenlijst/) (Dutch local newssite with a glossary)
 1. [Convertus - Paid Search Terms](https://www.convertus.com/search-glossary/)
 1. [Venlo's Waordeboek (Dutch Limburgian Dialect Dictionary)](https://veldekevenlo.nl/waordebook/)
 1. [Donegal Member Directory (multiple directories)](https://thisisdonegal.ie/members-directory/)
